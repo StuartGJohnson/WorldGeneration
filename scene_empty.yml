@@ -1,0 +1,13 @@
+area:
+- 40.0
+- 20.0
+resolution: 2.0
+robot_start_xy:
+- -10.0
+- 0.0
+robot_stop_xy:
+- 18.0
+- -8.0
+scale: 0.0
+seed: 41
+threshold: 0.0

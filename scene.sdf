@@ -1,0 +1,603 @@
+<sdf version="1.7">
+  <world name="default">
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <direction>-0.5 -0.5 -1</direction>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <intensity>1.0</intensity>
+    </light>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 0.0 -0.05 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.30024943522818365 0.30024943522818365 0.30024943522818365 1</ambient>
+            <diffuse>0.30024943522818365 0.30024943522818365 0.30024943522818365 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>20.0 20.0 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_0">
+      <static>true</static>
+      <link name="link">
+        <pose>-10.0 0.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5836560790747303 0.5836560790747303 0.5836560790747303 1</ambient>
+            <diffuse>0.5836560790747303 0.5836560790747303 0.5836560790747303 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 20.0 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_1">
+      <static>true</static>
+      <link name="link">
+        <pose>10.0 0.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.21500645313360017 0.21500645313360017 0.21500645313360017 1</ambient>
+            <diffuse>0.21500645313360017 0.21500645313360017 0.21500645313360017 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 20.0 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_2">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 -10.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3650175910214716 0.3650175910214716 0.3650175910214716 1</ambient>
+            <diffuse>0.3650175910214716 0.3650175910214716 0.3650175910214716 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>20.0 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_3">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 10.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3339264428892937 0.3339264428892937 0.3339264428892937 1</ambient>
+            <diffuse>0.3339264428892937 0.3339264428892937 0.3339264428892937 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>20.0 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_4">
+      <static>true</static>
+      <link name="link">
+        <pose>-8.0 -2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.7353077406229074 0.7353077406229074 0.7353077406229074 1</ambient>
+            <diffuse>0.7353077406229074 0.7353077406229074 0.7353077406229074 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 2.3533989748458226 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_5">
+      <static>true</static>
+      <link name="link">
+        <pose>-8.0 0.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.2178783316628422 0.2178783316628422 0.2178783316628422 1</ambient>
+            <diffuse>0.2178783316628422 0.2178783316628422 0.2178783316628422 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.28438436393705413</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_6">
+      <static>true</static>
+      <link name="link">
+        <pose>-8.0 2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.21592158181031817 0.21592158181031817 0.21592158181031817 1</ambient>
+            <diffuse>0.21592158181031817 0.21592158181031817 0.21592158181031817 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.3010710576206725</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_7">
+      <static>true</static>
+      <link name="link">
+        <pose>-8.0 4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.52696488836193 0.52696488836193 0.52696488836193 1</ambient>
+            <diffuse>0.52696488836193 0.52696488836193 0.52696488836193 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.32997688755590465</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_8">
+      <static>true</static>
+      <link name="link">
+        <pose>-8.0 6.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.6856582740066961 0.6856582740066961 0.6856582740066961 1</ambient>
+            <diffuse>0.6856582740066961 0.6856582740066961 0.6856582740066961 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.3178531367751818</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_9">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.0 -8.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.6188836369929362 0.6188836369929362 0.6188836369929362 1</ambient>
+            <diffuse>0.6188836369929362 0.6188836369929362 0.6188836369929362 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.3611638503665616</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_10">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.0 0.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.7743278433240688 0.7743278433240688 0.7743278433240688 1</ambient>
+            <diffuse>0.7743278433240688 0.7743278433240688 0.7743278433240688 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>1.310958999623563 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_11">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.0 2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.2580298261000784 0.2580298261000784 0.2580298261000784 1</ambient>
+            <diffuse>0.2580298261000784 0.2580298261000784 0.2580298261000784 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>1.1854916867602958 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_12">
+      <static>true</static>
+      <link name="link">
+        <pose>-6.0 4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.6842769639646282 0.6842769639646282 0.6842769639646282 1</ambient>
+            <diffuse>0.6842769639646282 0.6842769639646282 0.6842769639646282 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 2.207452062733782 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_13">
+      <static>true</static>
+      <link name="link">
+        <pose>-4.0 -6.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.7838694583876225 0.7838694583876225 0.7838694583876225 1</ambient>
+            <diffuse>0.7838694583876225 0.7838694583876225 0.7838694583876225 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 2.0724561829094013 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_14">
+      <static>true</static>
+      <link name="link">
+        <pose>-4.0 2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.697642798551797 0.697642798551797 0.697642798551797 1</ambient>
+            <diffuse>0.697642798551797 0.697642798551797 0.697642798551797 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>2.104081262546454 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_15">
+      <static>true</static>
+      <link name="link">
+        <pose>-4.0 4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5464112871540573 0.5464112871540573 0.5464112871540573 1</ambient>
+            <diffuse>0.5464112871540573 0.5464112871540573 0.5464112871540573 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 2.7234138006215547 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_16">
+      <static>true</static>
+      <link name="link">
+        <pose>-2.0 -6.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3367389653909282 0.3367389653909282 0.3367389653909282 1</ambient>
+            <diffuse>0.3367389653909282 0.3367389653909282 0.3367389653909282 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 1.0916487673113244 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_17">
+      <static>true</static>
+      <link name="link">
+        <pose>-2.0 4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3396745318166181 0.3396745318166181 0.3396745318166181 1</ambient>
+            <diffuse>0.3396745318166181 0.3396745318166181 0.3396745318166181 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2159583953847255</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_18">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 -2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5814106665586402 0.5814106665586402 0.5814106665586402 1</ambient>
+            <diffuse>0.5814106665586402 0.5814106665586402 0.5814106665586402 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.25559472062201843</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_19">
+      <static>true</static>
+      <link name="link">
+        <pose>2.0 -8.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.32570421846289266 0.32570421846289266 0.32570421846289266 1</ambient>
+            <diffuse>0.32570421846289266 0.32570421846289266 0.32570421846289266 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>1.7403619342337653 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_20">
+      <static>true</static>
+      <link name="link">
+        <pose>2.0 -4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5888212311479561 0.5888212311479561 0.5888212311479561 1</ambient>
+            <diffuse>0.5888212311479561 0.5888212311479561 0.5888212311479561 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.3873309175424988</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_21">
+      <static>true</static>
+      <link name="link">
+        <pose>2.0 -2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.6374760787702096 0.6374760787702096 0.6374760787702096 1</ambient>
+            <diffuse>0.6374760787702096 0.6374760787702096 0.6374760787702096 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 1.342277296396194 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_22">
+      <static>true</static>
+      <link name="link">
+        <pose>2.0 0.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.7937140103819573 0.7937140103819573 0.7937140103819573 1</ambient>
+            <diffuse>0.7937140103819573 0.7937140103819573 0.7937140103819573 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2758910883515296</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_23">
+      <static>true</static>
+      <link name="link">
+        <pose>4.0 -4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.6107685505939249 0.6107685505939249 0.6107685505939249 1</ambient>
+            <diffuse>0.6107685505939249 0.6107685505939249 0.6107685505939249 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 2.1138994875492925 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_24">
+      <static>true</static>
+      <link name="link">
+        <pose>4.0 2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.33742884317846267 0.33742884317846267 0.33742884317846267 1</ambient>
+            <diffuse>0.33742884317846267 0.33742884317846267 0.33742884317846267 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 2.5519998230924896 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_25">
+      <static>true</static>
+      <link name="link">
+        <pose>4.0 4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3606445255854217 0.3606445255854217 0.3606445255854217 1</ambient>
+            <diffuse>0.3606445255854217 0.3606445255854217 0.3606445255854217 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2630906096118164</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_26">
+      <static>true</static>
+      <link name="link">
+        <pose>6.0 -8.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.7258205758836014 0.7258205758836014 0.7258205758836014 1</ambient>
+            <diffuse>0.7258205758836014 0.7258205758836014 0.7258205758836014 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.3885819428670109</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_27">
+      <static>true</static>
+      <link name="link">
+        <pose>6.0 -6.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.4373791406363986 0.4373791406363986 0.4373791406363986 1</ambient>
+            <diffuse>0.4373791406363986 0.4373791406363986 0.4373791406363986 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>2.31087733058976 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_28">
+      <static>true</static>
+      <link name="link">
+        <pose>6.0 -4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3589280998988315 0.3589280998988315 0.3589280998988315 1</ambient>
+            <diffuse>0.3589280998988315 0.3589280998988315 0.3589280998988315 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 1.9177037051747976 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_29">
+      <static>true</static>
+      <link name="link">
+        <pose>6.0 -2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3576449651137612 0.3576449651137612 0.3576449651137612 1</ambient>
+            <diffuse>0.3576449651137612 0.3576449651137612 0.3576449651137612 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.31227362683263016</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_wall_30">
+      <static>true</static>
+      <link name="link">
+        <pose>6.0 0.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.4396403030842384 0.4396403030842384 0.4396403030842384 1</ambient>
+            <diffuse>0.4396403030842384 0.4396403030842384 0.4396403030842384 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>2.795645767204954 0.2 2.0</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_31">
+      <static>true</static>
+      <link name="link">
+        <pose>6.0 2.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5057157762058788 0.5057157762058788 0.5057157762058788 1</ambient>
+            <diffuse>0.5057157762058788 0.5057157762058788 0.5057157762058788 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.39950752129902206</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="pn_pillar_32">
+      <static>true</static>
+      <link name="link">
+        <pose>6.0 4.0 1.0 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.2657894782103955 0.2657894782103955 0.2657894782103955 1</ambient>
+            <diffuse>0.2657894782103955 0.2657894782103955 0.2657894782103955 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.20942327508494693</radius>
+              <length>2.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
