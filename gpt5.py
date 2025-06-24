@@ -184,6 +184,10 @@ def export_sdf(scene: Scene, filename: str):
     ET.SubElement(gz_sensors, "render_engine").text = "ogre2"
     ET.SubElement(world, "plugin", filename="gz-sim-imu-system", name="gz::sim::systems::Imu")
     ET.SubElement(world, "plugin", filename="gz-sim-contact-system", name="gz::sim::systems::Contact")
+    #gz_pose = ET.SubElement(world, "plugin", filename="gz-sim-pose-publisher-system", name="gz::sim::systems::PosePublisher")
+    #ET.SubElement(gz_pose, "publish_nested_model_pose").text = "true"
+    #ET.SubElement(gz_pose, "use_pose_vector_msg").text = "true"
+    #ET.SubElement(gz_pose, "update_frequency").text = "-1"
     # gz_ground_truth = ET.SubElement(world, "plugin", filename="gz-sim-ros-gz-bridge-system", name="gz::sim::systems::ParameterBridge")
     # ET.SubElement(gz_ground_truth, "topic_name").text = "/world/default/pose/info"
     # ET.SubElement(gz_ground_truth, "ros_type").text = "ros_gz_interfaces/msg/EntityPose_V"

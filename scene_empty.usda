@@ -46,7 +46,7 @@ def Xform "World"
         def Shader "diffuseShader"
         {
             uniform token info:id = "UsdPreviewSurface"
-            color3f inputs:diffuseColor = (0.6760282, 0.6760282, 0.6760282)
+            color3f inputs:diffuseColor = (0.535572, 0.535572, 0.535572)
             float inputs:roughness = 0.4
             token outputs:surface
         }
