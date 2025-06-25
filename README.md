@@ -40,7 +40,7 @@ This code requires a USD python library for the translation to USD and USDA. I u
 
 [nvidia usd](https://developer.nvidia.com/usd?sortBy=developer_learning_library%2Fsort%2Ffeatured_in.usd_resources%3Adesc%2Ctitle%3Aasc&hitsPerPage=6)
 
-You can also install usd via pypi (see the link). Searching the nvidia developer pages for up-to-date options is advisable. It is unclear how much special NVIDIA sauce is needed in the USD library.
+You can also install usd via pypi (see the link). Searching the nvidia developer pages for up-to-date options is advisable. It is unclear how much special NVIDIA sauce is needed in the USD library to support IsaacSim world definition.
 
 After installing USD in the binary manner, I used PYTHONPATH to extend my python interpreter so it could use the installed version of USD. See the file `env.sh`. I also use a conda env for this repo - based on python 3.11.
 
