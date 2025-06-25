@@ -44,6 +44,9 @@ You can also install usd via pypi (see the link). Searching the nvidia developer
 
 After installing USD in the binary manner, I used PYTHONPATH to extend my python interpreter so it could use the installed version of USD. See the file `env.sh`. I also use a conda env for this repo - based on python 3.11.
 
+See also: 
+- [environment.yml](environment.yml)
+
 ## Usage
 
 Currently, all code is run from the unit test: `test_gpy.py`. This will evolve.
