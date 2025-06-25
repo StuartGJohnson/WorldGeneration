@@ -11,7 +11,7 @@ While generating SDF files for Gazebo can be done entirely with XML, I use the N
 
 This code requires a USD python library. I used the prebuilt NVIDIA USD library, installed via:
 
-[nvidia usd] (https://developer.nvidia.com/usd?sortBy=developer_learning_library%2Fsort%2Ffeatured_in.usd_resources%3Adesc%2Ctitle%3Aasc&hitsPerPage=6)
+[nvidia usd](https://developer.nvidia.com/usd?sortBy=developer_learning_library%2Fsort%2Ffeatured_in.usd_resources%3Adesc%2Ctitle%3Aasc&hitsPerPage=6)
 
 You can also install usd via pypi (see the link). Searching the nvidia developer pages for up-to-date options is advisable.
 
