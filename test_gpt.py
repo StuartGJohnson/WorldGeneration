@@ -19,6 +19,7 @@ class MyTestCase(unittest.TestCase):
                                                               resolution=resolution,
                                                               threshold=threshold,
                                                               scale=scale,
+                                                              scene_type_tall=True,
                                                               seed=seed)
 
         robot_start_xy, robot_stop_xy = gpt5.get_reachable_locations(res, occ_map)
@@ -48,6 +49,7 @@ class MyTestCase(unittest.TestCase):
                                                               resolution=resolution,
                                                               threshold=threshold,
                                                               scale=scale,
+                                                              scene_type_tall=True,
                                                               seed=seed)
 
         robot_start_xy, robot_stop_xy = gpt5.get_reachable_locations(res, occ_map)
@@ -64,6 +66,65 @@ class MyTestCase(unittest.TestCase):
         robot_xy = np.array(data['robot_start_xy'])
 
         self.assertTrue(np.array_equal(np.array([-2.0, 0.0]), robot_xy))  # add assertion here
+
+    def test_occupancy_stuff2(self):
+        scene = gpt5.Scene()
+        #seed = random.randint(0, 1000)
+        resolution = 0.5
+        area = (6.0, 12.0)
+        threshold = 0.0
+        scale = 0.15
+        seed = 42
+        (res, occ_map) = scene.generate_perlin_navigable_zone(area_size=area,
+                                                              resolution=resolution,
+                                                              threshold=threshold,
+                                                              scale=scale,
+                                                              scene_type_tall=True,
+                                                              seed=seed)
+
+        robot_start_xy, robot_stop_xy = gpt5.get_reachable_locations(res, occ_map)
+
+        gpt5.export_sdf(scene, "scene_stuff2")
+        gpt5.export_usda(scene, "scene_stuff2")
+        gpt5.export_metadata(seed, threshold, resolution, area, scale, robot_start_xy, robot_stop_xy, occ_map, "scene_stuff2")
+
+        #self.assertTrue(np.array_equal(np.array([-2.0, 0.0]), robot_start_xy)) # add assertion here
+
+        # retrieve robot_xy
+        with open("scene_stuff2.yml", 'r') as file:
+            data = yaml.safe_load(file)
+        robot_xy = np.array(data['robot_start_xy'])
+
+        #self.assertTrue(np.array_equal(np.array([-2.0, 0.0]), robot_xy))  # add assertion here
+
+    def test_occupancy_stuff_clutter(self):
+        scene = gpt5.Scene()
+        # seed = random.randint(0, 1000)
+        resolution = 0.5
+        area = (6.0, 12.0)
+        threshold = 0.0
+        scale = 0.15
+        seed = 42
+        (res, occ_map) = scene.generate_perlin_navigable_zone(area_size=area,
+                                                              resolution=resolution,
+                                                              threshold=threshold,
+                                                              scale=scale,
+                                                              scene_type_tall=False,
+                                                              seed=seed)
+
+        robot_start_xy, robot_stop_xy = gpt5.get_reachable_locations(res, occ_map)
+
+        gpt5.export_sdf(scene, "scene_stuffx")
+        gpt5.export_usda(scene, "scene_stuffx")
+        gpt5.export_metadata(seed, threshold, resolution, area, scale, robot_start_xy, robot_stop_xy, occ_map,
+                             "scene_stuffx")
+
+        # self.assertTrue(np.array_equal(np.array([-2.0, 0.0]), robot_start_xy)) # add assertion here
+
+        # retrieve robot_xy
+        with open("scene_stuffx.yml", 'r') as file:
+            data = yaml.safe_load(file)
+        robot_xy = np.array(data['robot_start_xy'])
 
     def test_sdf(self):
         scene = gpt5.Scene()

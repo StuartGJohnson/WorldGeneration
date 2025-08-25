@@ -48,11 +48,75 @@ class Scene:
         pose = (0.0, 0.0, -size[2] / 2)
         self.add_box("ground_plane", pose, size)
 
+    def fill_map_high(self, np_area_size, i_max, j_max, resolution, threshold, perlin_map):
+        occupancy_map = np.zeros((np_area_size//resolution + 1).astype(int), dtype=np.uint8)
+        count = 0
+        for i in range(-i_max+1, i_max-1):
+            for j in range(-j_max+1, j_max-1):
+                x = i * resolution
+                y = j * resolution
+                value = perlin_map[i+i_max,j+j_max]
+                if value < threshold:
+                    z = 1.0
+                    rnum = random.random()
+                    if rnum < 0.3:
+                        radius = random.uniform(0.2, 0.4) * resolution
+                        self.add_cylinder(f"pn_pillar_{count}", (x, y, z), radius, 2.0)
+                    elif rnum < 0.6:
+                        length = random.uniform(0.8, 1.0) * resolution
+                        length2 = resolution/4.0
+                        self.add_box(f"pn_wall_{count}", (x, y, z), (length, length2, 2.0))
+                    else:
+                        length = random.uniform(0.8, 1.0) * resolution
+                        length2 = resolution / 4.0
+                        self.add_box(f"pn_wall_{count}", (x, y, z), (length2, length, 2.0))
+                    count += 1
+                    occupancy_map[i+i_max,j+j_max] = 1
+        return count, occupancy_map
+
+    def fill_map_clutter(self, i_max, j_max, resolution, threshold, perlin_map):
+        occupancy_map = (perlin_map < threshold).astype(np.uint8)
+        # invert the occupancy map, and find distance to the nearest non-zero pixel
+        # free_map  = 1 - occupancy_map
+        dist_map = cv2.distanceTransform(occupancy_map, cv2.DIST_L2, 0)
+        # plt.figure()
+        # plt.imshow(dist_map)
+        # plt.colorbar()
+        # plt.show()
+        # plt.figure()
+        # plt.imshow(occupancy_map*255)
+        # plt.colorbar()
+        # plt.show()
+        # peripheral pixels have z = 0.05
+        # interior pixels have z = 2.0
+        count = 0
+        for i in range(-i_max + 1, i_max - 1):
+            for j in range(-j_max + 1, j_max - 1):
+                x = i * resolution
+                y = j * resolution
+                value = dist_map[i + i_max, j + j_max]
+                if value > 1:
+                    height = 1.0
+                    z = height / 2
+                    xy = resolution
+                    self.add_box(f"pn_wall_{count}", (x, y, z), (xy, xy, height))
+                    count += 1
+                elif value > 0.5:
+                    height = random.uniform(0.05, 0.1) * resolution
+                    z = height / 2
+                    radius = random.uniform(0.2, 0.5) * resolution
+                    self.add_cylinder(f"pn_pillar_{count}", (x, y, z), radius, height)
+                    rnum = random.random()
+                    count += 1
+        return count, occupancy_map
+
+
     def generate_perlin_navigable_zone(self,
                                        area_size: Tuple[float, float],
                                        resolution: float,
                                        threshold: float,
                                        scale: float,
+                                       scene_type_tall: bool,
                                        seed: int= 42 ) -> (float, np.ndarray):
         max_x, max_y = area_size
         self.add_ground_plane(size=(max_x, max_y, 0.1))
@@ -61,44 +125,38 @@ class Scene:
         max_y //= 2
         #seed = random.randint(0, 1000)
         random.seed(seed)
-        count = 0
-        occupancy_map = np.zeros((np_area_size//resolution + 1).astype(int), dtype=np.uint8)
+        #occupancy_map = np.zeros((np_area_size//resolution + 1).astype(int), dtype=np.uint8)
+        perlin_map = np.zeros((np_area_size//resolution + 1).astype(int), dtype=float)
+        height_map = np.zeros((np_area_size//resolution + 1).astype(int), dtype=float)
         i_max = int(max_x//resolution)
         j_max = int(max_y//resolution)
         length_x = max_x * 2
         length_y = max_y * 2
-        z = 1.0
-        self.add_box(f"pn_wall_{count}", (-max_x, 0.0, z), (0.2, length_y, 2.0))
+        # first, sample perlin noise over the map
+        for i in range(-i_max, i_max):
+            for j in range(-j_max, j_max):
+                x = i * resolution
+                y = j * resolution
+                perlin_map[i + i_max, j + j_max] = noise.pnoise2(i * scale, j * scale, octaves=4, repeatx=1024, repeaty=1024, base=seed)
+        if scene_type_tall:
+            count, occupancy_map = self.fill_map_high(np_area_size, i_max, j_max, resolution, threshold, perlin_map)
+        else:
+            count, occupancy_map = self.fill_map_clutter(i_max, j_max, resolution, threshold, perlin_map)
+        # add walls
+        z = 0.5
+        self.add_box(f"pn_wall_{count}", (-max_x, 0.0, z), (0.2, length_y, 1.0))
         count += 1
-        self.add_box(f"pn_wall_{count}", (max_x, 0.0, z), (0.2, length_y, 2.0))
+        self.add_box(f"pn_wall_{count}", (max_x, 0.0, z), (0.2, length_y, 1.0))
         count += 1
-        self.add_box(f"pn_wall_{count}", (0.0, -max_y, z), (length_x, 0.2, 2.0))
+        self.add_box(f"pn_wall_{count}", (0.0, -max_y, z), (length_x, 0.2, 1.0))
         count += 1
-        self.add_box(f"pn_wall_{count}", (0.0, max_y, z), (length_x, 0.2, 2.0))
+        self.add_box(f"pn_wall_{count}", (0.0, max_y, z), (length_x, 0.2, 1.0))
         count += 1
         occupancy_map[:, 0] = 1
         occupancy_map[:, -1] = 1
         occupancy_map[0, :] = 1
         occupancy_map[-1, :] = 1
-        for i in range(-i_max+1, i_max-1):
-            for j in range(-j_max+1, j_max-1):
-                x = i * resolution
-                y = j * resolution
-                value = noise.pnoise2(i * scale, j * scale, octaves=4, repeatx=1024, repeaty=1024, base=seed)
-                if value < threshold:
-                    z = 1.0
-                    rnum = random.random()
-                    if rnum < 0.3:
-                        radius = random.uniform(0.2, 0.4)
-                        self.add_cylinder(f"pn_pillar_{count}", (x, y, z), radius, 2.0)
-                    elif rnum < 0.6:
-                        length = random.uniform(1.0, 3.0)
-                        self.add_box(f"pn_wall_{count}", (x, y, z), (length, 0.2, 2.0))
-                    else:
-                        length = random.uniform(1.0, 3.0)
-                        self.add_box(f"pn_wall_{count}", (x, y, z), (0.2, length, 2.0))
-                    count += 1
-                    occupancy_map[i+i_max,j+j_max] = 1
+
         print(f"Added {count} objects.")
         occupancy_map *= 255
         return resolution, occupancy_map
@@ -204,9 +262,8 @@ def export_sdf(scene: Scene, filename: str):
 
     # general physics solver
     phy = ET.SubElement(world, "physics", type="ode")
-    ET.SubElement(phy, "real_time_update_rate").text = "1000.0"
     ET.SubElement(phy, "max_step_size").text = "0.001"
-    ET.SubElement(phy, "real_time_factor").text = "1"
+    ET.SubElement(phy, "real_time_factor").text = "1.0"
     phy_ode = ET.SubElement(phy, "ode")
     phy_ode_solver = ET.SubElement(phy_ode, "solver")
     ET.SubElement(phy_ode_solver, "type").text = "quick"
