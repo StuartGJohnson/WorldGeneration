@@ -1,0 +1,895 @@
+<sdf version="1.7">
+  <world name="default">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact" />
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <direction>-0.5 -0.5 -1</direction>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <intensity>1.0</intensity>
+    </light>
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>150</iters>
+          <precon_iters>0</precon_iters>
+          <sor>1.4</sor>
+          <use_dynamic_moi_rescaling>1</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0.00001</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>2000.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.01</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 0.0 -0.05 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <pbr>
+              <metal>
+                <albedo_map>file:///home/sjohnson/WorldGeneration/floor_texture.png</albedo_map>
+                <metalness>0.0</metalness>
+                <roughness>1.0</roughness>
+              </metal>
+            </pbr>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>6.0 12.0 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.0 12.0 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_0">
+      <static>true</static>
+      <link name="link">
+        <pose>-2.0 -5.0 0.4469273363149318 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5531721096645393 0.5531721096645393 0.5531721096645393 1</ambient>
+            <diffuse>0.5531721096645393 0.5531721096645393 0.5531721096645393 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.3199983187913039</radius>
+              <length>0.8938546726298636</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.3199983187913039</radius>
+              <length>0.8938546726298636</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_1">
+      <static>true</static>
+      <link name="link">
+        <pose>-2.0 1.0 0.1335561215981853 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5502382913441637 0.5502382913441637 0.5502382913441637 1</ambient>
+            <diffuse>0.5502382913441637 0.5502382913441637 0.5502382913441637 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.3547151852070559</radius>
+              <length>0.2671122431963706</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.3547151852070559</radius>
+              <length>0.2671122431963706</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_2">
+      <static>true</static>
+      <link name="link">
+        <pose>-1.0 -5.0 0.04028616018172717 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.39205049558950034 0.39205049558950034 0.39205049558950034 1</ambient>
+            <diffuse>0.39205049558950034 0.39205049558950034 0.39205049558950034 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2206831010799622</radius>
+              <length>0.08057232036345434</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2206831010799622</radius>
+              <length>0.08057232036345434</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_3">
+      <static>true</static>
+      <link name="link">
+        <pose>-1.0 -4.0 0.42549605417745373 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.7517240120261395 0.7517240120261395 0.7517240120261395 1</ambient>
+            <diffuse>0.7517240120261395 0.7517240120261395 0.7517240120261395 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2406173539504394</radius>
+              <length>0.8509921083549075</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2406173539504394</radius>
+              <length>0.8509921083549075</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_4">
+      <static>true</static>
+      <link name="link">
+        <pose>-1.0 -3.0 0.48475088189394216 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.25575286774918693 0.25575286774918693 0.25575286774918693 1</ambient>
+            <diffuse>0.25575286774918693 0.25575286774918693 0.25575286774918693 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.4803557979223696</radius>
+              <length>0.9695017637878843</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.4803557979223696</radius>
+              <length>0.9695017637878843</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_5">
+      <static>true</static>
+      <link name="link">
+        <pose>-1.0 -2.0 0.25240358185902073 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.4793651081500856 0.4793651081500856 0.4793651081500856 1</ambient>
+            <diffuse>0.4793651081500856 0.4793651081500856 0.4793651081500856 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2468333418757992</radius>
+              <length>0.5048071637180415</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2468333418757992</radius>
+              <length>0.5048071637180415</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_6">
+      <static>true</static>
+      <link name="link">
+        <pose>-1.0 3.0 0.38071539722993586 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.2656291101842988 0.2656291101842988 0.2656291101842988 1</ambient>
+            <diffuse>0.2656291101842988 0.2656291101842988 0.2656291101842988 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.36332676474600667</radius>
+              <length>0.7614307944598717</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.36332676474600667</radius>
+              <length>0.7614307944598717</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_7">
+      <static>true</static>
+      <link name="link">
+        <pose>-1.0 4.0 0.26562181868313917 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.36504180648916296 0.36504180648916296 0.36504180648916296 1</ambient>
+            <diffuse>0.36504180648916296 0.36504180648916296 0.36504180648916296 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.43354863759059525</radius>
+              <length>0.5312436373662783</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.43354863759059525</radius>
+              <length>0.5312436373662783</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_8">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 -4.0 0.19350075696717575 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.4013506522494112 0.4013506522494112 0.4013506522494112 1</ambient>
+            <diffuse>0.4013506522494112 0.4013506522494112 0.4013506522494112 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.22070945115939472</radius>
+              <length>0.3870015139343515</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.22070945115939472</radius>
+              <length>0.3870015139343515</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_9">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 1.0 0.11227867664645658 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.663914047671273 0.663914047671273 0.663914047671273 1</ambient>
+            <diffuse>0.663914047671273 0.663914047671273 0.663914047671273 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2905201875194141</radius>
+              <length>0.22455735329291315</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2905201875194141</radius>
+              <length>0.22455735329291315</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_10">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 2.0 0.07955180184588803 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5661689417808379 0.5661689417808379 0.5661689417808379 1</ambient>
+            <diffuse>0.5661689417808379 0.5661689417808379 0.5661689417808379 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.2744476236270714</radius>
+              <length>0.15910360369177606</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2744476236270714</radius>
+              <length>0.15910360369177606</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_11">
+      <static>true</static>
+      <link name="link">
+        <pose>1.0 -5.0 0.3464482938812816 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3703607148456388 0.3703607148456388 0.3703607148456388 1</ambient>
+            <diffuse>0.3703607148456388 0.3703607148456388 0.3703607148456388 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.21937679817428235</radius>
+              <length>0.6928965877625632</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.21937679817428235</radius>
+              <length>0.6928965877625632</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_12">
+      <static>true</static>
+      <link name="link">
+        <pose>1.0 -4.0 0.29104809006238913 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.6507342844995496 0.6507342844995496 0.6507342844995496 1</ambient>
+            <diffuse>0.6507342844995496 0.6507342844995496 0.6507342844995496 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.30975533693239765</radius>
+              <length>0.5820961801247783</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.30975533693239765</radius>
+              <length>0.5820961801247783</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_13">
+      <static>true</static>
+      <link name="link">
+        <pose>1.0 0.0 0.3015860229382031 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5255654894835141 0.5255654894835141 0.5255654894835141 1</ambient>
+            <diffuse>0.5255654894835141 0.5255654894835141 0.5255654894835141 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.25146855053313544</radius>
+              <length>0.6031720458764062</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.25146855053313544</radius>
+              <length>0.6031720458764062</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_pillar_14">
+      <static>true</static>
+      <link name="link">
+        <pose>1.0 1.0 0.07282649261640947 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3045365686947347 0.3045365686947347 0.3045365686947347 1</ambient>
+            <diffuse>0.3045365686947347 0.3045365686947347 0.3045365686947347 1</diffuse>
+          </material>
+          <geometry>
+            <cylinder>
+              <radius>0.4574774369683967</radius>
+              <length>0.14565298523281894</length>
+            </cylinder>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.4574774369683967</radius>
+              <length>0.14565298523281894</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_wall_15">
+      <static>true</static>
+      <link name="link">
+        <pose>-3.0 0.0 0.5 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.6295199746819959 0.6295199746819959 0.6295199746819959 1</ambient>
+            <diffuse>0.6295199746819959 0.6295199746819959 0.6295199746819959 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 12.0 1.0</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.2 12.0 1.0</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_wall_16">
+      <static>true</static>
+      <link name="link">
+        <pose>3.0 0.0 0.5 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3112974444057181 0.3112974444057181 0.3112974444057181 1</ambient>
+            <diffuse>0.3112974444057181 0.3112974444057181 0.3112974444057181 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>0.2 12.0 1.0</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.2 12.0 1.0</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_wall_17">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 -6.0 0.5 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.3805056724138497 0.3805056724138497 0.3805056724138497 1</ambient>
+            <diffuse>0.3805056724138497 0.3805056724138497 0.3805056724138497 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>6.0 0.2 1.0</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.0 0.2 1.0</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+    <model name="pn_wall_18">
+      <static>true</static>
+      <link name="link">
+        <pose>0.0 6.0 0.5 0 0 0</pose>
+        <visual name="visual">
+          <material>
+            <ambient>0.5447857185948857 0.5447857185948857 0.5447857185948857 1</ambient>
+            <diffuse>0.5447857185948857 0.5447857185948857 0.5447857185948857 1</diffuse>
+          </material>
+          <geometry>
+            <box>
+              <size>6.0 0.2 1.0</size>
+            </box>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.0 0.2 1.0</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50.0</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+            </friction>
+            <bounce />
+            <contact>
+              <ode>
+                <kp>10000.0</kp>
+                <kd>100.0</kd>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+    </model>
+  </world>
+</sdf>

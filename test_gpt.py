@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 import yaml
+import glb_exporter
 
 class MyTestCase(unittest.TestCase):
     def test_occupancy_empty(self):
@@ -125,6 +126,38 @@ class MyTestCase(unittest.TestCase):
         with open("scene_stuffx.yml", 'r') as file:
             data = yaml.safe_load(file)
         robot_xy = np.array(data['robot_start_xy'])
+
+
+    def test_occupancy_stuff_clutter2(self):
+        scene = gpt5.Scene()
+        # seed = random.randint(0, 1000)
+        resolution = 1.0
+        area = (6.0, 12.0)
+        threshold = -0.05
+        scale = 0.4
+        seed = 46
+        (res, occ_map) = scene.generate_perlin_navigable_zone(area_size=area,
+                                                              resolution=resolution,
+                                                              threshold=threshold,
+                                                              scale=scale,
+                                                              scene_type_tall=False,
+                                                              seed=seed)
+
+        robot_start_xy, robot_stop_xy = gpt5.get_reachable_locations(res, occ_map)
+
+        gpt5.export_sdf(scene, "scene_stuffx2", True)
+        gpt5.export_usda(scene, "scene_stuffx2")
+        gpt5.export_metadata(seed, threshold, resolution, area, scale, robot_start_xy, robot_stop_xy, occ_map,
+                             "scene_stuffx2")
+        glb_exporter.export_glb(scene, "scene_stuffx2.glb", True, texture_path="floor_texture.png")
+
+        # self.assertTrue(np.array_equal(np.array([-2.0, 0.0]), robot_start_xy)) # add assertion here
+
+        # retrieve robot_xy
+        with open("scene_stuffx2.yml", 'r') as file:
+            data = yaml.safe_load(file)
+        robot_xy = np.array(data['robot_start_xy'])
+
 
     def test_sdf(self):
         scene = gpt5.Scene()

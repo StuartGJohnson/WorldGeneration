@@ -1,0 +1,728 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def PhysicsScene "physicsScene"
+    {
+        float physics:contactOffset = 0.02
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+        int physics:positionIterations = 16
+        float physics:restOffset = 0.001
+        int physics:velocityIterations = 8
+    }
+
+    def Xform "ground_plane"
+    {
+        float3 xformOp:scale = (3, 6, 0.05)
+        double3 xformOp:translate = (0, 0, -0.05)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cube "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/ground_plane_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "ground_plane_material"
+    {
+        token outputs:surface.connect = </World/ground_plane_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.5322669, 0.5322669, 0.5322669)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_0"
+    {
+        float3 xformOp:scale = (0.31999832, 0.31999832, 0.44692734)
+        double3 xformOp:translate = (-2, -5, 0.4469273363149318)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_0_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_0_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_0_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.5531721, 0.5531721, 0.5531721)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_1"
+    {
+        float3 xformOp:scale = (0.3547152, 0.3547152, 0.13355613)
+        double3 xformOp:translate = (-2, 1, 0.1335561215981853)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_1_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_1_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_1_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.5502383, 0.5502383, 0.5502383)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_2"
+    {
+        float3 xformOp:scale = (0.2206831, 0.2206831, 0.04028616)
+        double3 xformOp:translate = (-1, -5, 0.04028616018172717)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_2_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_2_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_2_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.3920505, 0.3920505, 0.3920505)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_3"
+    {
+        float3 xformOp:scale = (0.24061735, 0.24061735, 0.42549604)
+        double3 xformOp:translate = (-1, -4, 0.42549605417745373)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_3_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_3_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_3_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.751724, 0.751724, 0.751724)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_4"
+    {
+        float3 xformOp:scale = (0.4803558, 0.4803558, 0.4847509)
+        double3 xformOp:translate = (-1, -3, 0.48475088189394216)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_4_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_4_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_4_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.25575286, 0.25575286, 0.25575286)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_5"
+    {
+        float3 xformOp:scale = (0.24683334, 0.24683334, 0.2524036)
+        double3 xformOp:translate = (-1, -2, 0.25240358185902073)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_5_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_5_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_5_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.4793651, 0.4793651, 0.4793651)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_6"
+    {
+        float3 xformOp:scale = (0.36332676, 0.36332676, 0.3807154)
+        double3 xformOp:translate = (-1, 3, 0.38071539722993586)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_6_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_6_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_6_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.2656291, 0.2656291, 0.2656291)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_7"
+    {
+        float3 xformOp:scale = (0.43354863, 0.43354863, 0.2656218)
+        double3 xformOp:translate = (-1, 4, 0.26562181868313917)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_7_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_7_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_7_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.3650418, 0.3650418, 0.3650418)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_8"
+    {
+        float3 xformOp:scale = (0.22070946, 0.22070946, 0.19350076)
+        double3 xformOp:translate = (0, -4, 0.19350075696717575)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_8_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_8_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_8_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.40135065, 0.40135065, 0.40135065)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_9"
+    {
+        float3 xformOp:scale = (0.2905202, 0.2905202, 0.11227868)
+        double3 xformOp:translate = (0, 1, 0.11227867664645658)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_9_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_9_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_9_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.663914, 0.663914, 0.663914)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_10"
+    {
+        float3 xformOp:scale = (0.27444762, 0.27444762, 0.0795518)
+        double3 xformOp:translate = (0, 2, 0.07955180184588803)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_10_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_10_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_10_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.56616896, 0.56616896, 0.56616896)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_11"
+    {
+        float3 xformOp:scale = (0.2193768, 0.2193768, 0.3464483)
+        double3 xformOp:translate = (1, -5, 0.3464482938812816)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_11_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_11_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_11_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.3703607, 0.3703607, 0.3703607)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_12"
+    {
+        float3 xformOp:scale = (0.30975533, 0.30975533, 0.29104808)
+        double3 xformOp:translate = (1, -4, 0.29104809006238913)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_12_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_12_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_12_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.6507343, 0.6507343, 0.6507343)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_13"
+    {
+        float3 xformOp:scale = (0.25146854, 0.25146854, 0.30158603)
+        double3 xformOp:translate = (1, 0, 0.3015860229382031)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_13_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_13_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_13_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.5255655, 0.5255655, 0.5255655)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_pillar_14"
+    {
+        float3 xformOp:scale = (0.45747745, 0.45747745, 0.07282649)
+        double3 xformOp:translate = (1, 1, 0.07282649261640947)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cylinder "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_pillar_14_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_pillar_14_material"
+    {
+        token outputs:surface.connect = </World/pn_pillar_14_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.30453658, 0.30453658, 0.30453658)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_wall_15"
+    {
+        float3 xformOp:scale = (0.1, 6, 0.5)
+        double3 xformOp:translate = (-3, 0, 0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cube "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_wall_15_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_wall_15_material"
+    {
+        token outputs:surface.connect = </World/pn_wall_15_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.62952, 0.62952, 0.62952)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_wall_16"
+    {
+        float3 xformOp:scale = (0.1, 6, 0.5)
+        double3 xformOp:translate = (3, 0, 0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cube "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_wall_16_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_wall_16_material"
+    {
+        token outputs:surface.connect = </World/pn_wall_16_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.31129745, 0.31129745, 0.31129745)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_wall_17"
+    {
+        float3 xformOp:scale = (3, 0.1, 0.5)
+        double3 xformOp:translate = (0, -6, 0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cube "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_wall_17_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_wall_17_material"
+    {
+        token outputs:surface.connect = </World/pn_wall_17_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.38050568, 0.38050568, 0.38050568)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "pn_wall_18"
+    {
+        float3 xformOp:scale = (3, 0.1, 0.5)
+        double3 xformOp:translate = (0, 6, 0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cube "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/pn_wall_18_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "pn_wall_18_material"
+    {
+        token outputs:surface.connect = </World/pn_wall_18_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.54478574, 0.54478574, 0.54478574)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+}
+
+def DistantLight "SunLight"
+{
+    color3f inputs:color = (1, 1, 0.95)
+    float inputs:intensity = 1000
+    float3 xformOp:rotateXYZ = (-45, 0, 45)
+    uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+}
+

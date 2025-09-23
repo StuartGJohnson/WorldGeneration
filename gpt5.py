@@ -8,6 +8,7 @@ import cv2
 import yaml
 import matplotlib.pyplot as plt
 from skimage.graph import MCP, MCP_Connect
+import os
 
 
 # Abstract scene element classes
@@ -102,7 +103,7 @@ class Scene:
                     self.add_box(f"pn_wall_{count}", (x, y, z), (xy, xy, height))
                     count += 1
                 elif value > 0.5:
-                    height = random.uniform(0.05, 0.1) * resolution
+                    height = random.uniform(0.05, 1.0) * resolution
                     z = height / 2
                     radius = random.uniform(0.2, 0.5) * resolution
                     self.add_cylinder(f"pn_pillar_{count}", (x, y, z), radius, height)
@@ -230,7 +231,7 @@ def export_metadata(seed: int,
     cv2.imwrite(filename + ".png", occ_map)
 
 
-def export_sdf(scene: Scene, filename: str):
+def export_sdf(scene: Scene, filename: str, do_texture: bool = False):
     sdf = ET.Element("sdf", version="1.7")
     world = ET.SubElement(sdf, "world", name="default")
 
@@ -286,10 +287,28 @@ def export_sdf(scene: Scene, filename: str):
         pose.text = f"{obj.pose[0]} {obj.pose[1]} {obj.pose[2]} 0 0 0"
         visual = ET.SubElement(link, "visual", name="visual")
         mat = ET.SubElement(visual, "material")
-        ambient = ET.SubElement(mat, "ambient")
-        ambient.text = f"{obj.color[0]} {obj.color[1]} {obj.color[2]} 1"
-        diffuse = ET.SubElement(mat, "diffuse")
-        diffuse.text = f"{obj.color[0]} {obj.color[1]} {obj.color[2]} 1"
+        if obj.name == "ground_plane" and do_texture:
+            pbr = ET.SubElement(mat, "pbr")
+            ambient = ET.SubElement(mat, "ambient")
+            ambient.text = "1 1 1 1"
+            diffuse = ET.SubElement(mat, "diffuse")
+            diffuse.text = "1 1 1 1"
+            metal = ET.SubElement(pbr, "metal")
+            albedo_map = ET.SubElement(metal, "albedo_map")
+            # some might say the right way to do this is via a
+            # gazebo resource env variable
+            cwd = os.getcwd()
+            abspath = os.path.join("file://" + cwd, "floor_texture.png")
+            albedo_map.text  = abspath
+            metalness = ET.SubElement(metal, "metalness")
+            metalness.text = "0.0"
+            roughness = ET.SubElement(metal, "roughness")
+            roughness.text = "1.0"
+        else:
+            ambient = ET.SubElement(mat, "ambient")
+            ambient.text = f"{obj.color[0]} {obj.color[1]} {obj.color[2]} 1"
+            diffuse = ET.SubElement(mat, "diffuse")
+            diffuse.text = f"{obj.color[0]} {obj.color[1]} {obj.color[2]} 1"
         geom = ET.SubElement(visual, "geometry")
         if isinstance(obj, Box):
             box = ET.SubElement(geom, "box")
