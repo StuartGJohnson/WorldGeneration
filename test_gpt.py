@@ -158,6 +158,16 @@ class MyTestCase(unittest.TestCase):
             data = yaml.safe_load(file)
         robot_xy = np.array(data['robot_start_xy'])
 
+    def test_calibration(self):
+        scene = gpt5.Scene()
+        scene.make_calibration_scene()
+
+        gpt5.export_sdf(scene, "scene_cal", False)
+        gpt5.export_usda(scene, "scene_cal")
+        glb_exporter.export_glb(scene, "scene_cal.glb", False)
+        gpt5.export_metadata(0, 0, 0, (0,0), 0, np.array([-0.25,0.0]), np.array([0.0,0.0]), None,
+                             "scene_cal")
+
 
     def test_sdf(self):
         scene = gpt5.Scene()

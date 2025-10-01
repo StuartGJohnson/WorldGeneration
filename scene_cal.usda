@@ -1,0 +1,98 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def PhysicsScene "physicsScene"
+    {
+        float physics:contactOffset = 0.02
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+        int physics:positionIterations = 16
+        float physics:restOffset = 0.001
+        int physics:velocityIterations = 8
+    }
+
+    def Xform "calibration_target"
+    {
+        float3 xformOp:scale = (0.1778, 0.2413, 0.1778)
+        double3 xformOp:translate = (0.29634845199528204, 0.044901280605345734, 0.1778)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cube "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/calibration_target_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "calibration_target_material"
+    {
+        token outputs:surface.connect = </World/calibration_target_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.5861032, 0.5861032, 0.5861032)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+
+    def Xform "ground_plane"
+    {
+        float3 xformOp:scale = (1.5, 1.5, 0.0005)
+        double3 xformOp:translate = (0, 0, -0.0005)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+
+        def Cube "geom" (
+            apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "PhysxCollisionAPI"]
+        )
+        {
+            rel material:binding = </World/ground_plane_material>
+            float physics:density = 1000
+            float physics:dynamicFriction = 50
+            bool physics:kinematicEnabled = 1
+            float physics:restitution = 0.01
+            bool physics:rigidBodyEnabled = 1
+            float physics:staticFriction = 100
+            float physxCollision:contactOffset = 0.02
+            float physxCollision:restOffset = 0.001
+        }
+    }
+
+    def Material "ground_plane_material"
+    {
+        token outputs:surface.connect = </World/ground_plane_material/diffuseShader.outputs:surface>
+
+        def Shader "diffuseShader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.64340925, 0.64340925, 0.64340925)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+}
+
+def DistantLight "SunLight"
+{
+    color3f inputs:color = (1, 1, 0.95)
+    float inputs:intensity = 1000
+    float3 xformOp:rotateXYZ = (-45, 0, 45)
+    uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+}
+

@@ -11,9 +11,10 @@ from skimage.graph import MCP, MCP_Connect
 import os
 
 
+
 # Abstract scene element classes
 class SceneObject:
-    def __init__(self, name: str, pose: Tuple[float, float, float], size: Tuple[float, float, float]):
+    def __init__(self, name: str, pose: Tuple[float, float, float, float, float, float], size: Tuple[float, float, float]):
         self.name = name
         self.pose = pose
         self.size = size
@@ -29,7 +30,7 @@ class Box(SceneObject):
     pass
 
 class Cylinder(SceneObject):
-    def __init__(self, name: str, pose: Tuple[float, float, float], radius: float, height: float):
+    def __init__(self, name: str, pose: Tuple[float, float, float, float, float, float], radius: float, height: float):
         super().__init__(name, pose, (radius*2, radius*2, height))
         self.radius = radius
         self.height = height
@@ -46,8 +47,22 @@ class Scene:
         self.objects.append(Cylinder(name, pose, radius, height))
 
     def add_ground_plane(self, size):
-        pose = (0.0, 0.0, -size[2] / 2)
+        pose = (0.0, 0.0, -size[2] / 2, 0.0, 0.0, 0.0)
         self.add_box("ground_plane", pose, size)
+
+    def make_calibration_scene(self):
+        # my calibration box is denominated in inches!
+        bx=14.0*2.54/100.0
+        by=19.0*2.54/100.0
+        bz=14.0*2.54/100.0
+        # the corner will be placed at (0,0,0), with the long side to the left
+        # compute box corner location relative to box center
+        r = np.pi-np.pi/4.0
+        xc = np.cos(r)*bx/2.0 - np.sin(r)*by/2.0
+        yc = np.sin(r) * bx / 2.0 + np.cos(r) * by / 2.0
+        pose = (-xc, -yc, bz/2.0, 0.0, 0.0, r)
+        self.add_box("calibration_target", pose, (bx,by,bz))
+        self.add_ground_plane(size=(3, 3, 0.001))
 
     def fill_map_high(self, np_area_size, i_max, j_max, resolution, threshold, perlin_map):
         occupancy_map = np.zeros((np_area_size//resolution + 1).astype(int), dtype=np.uint8)
@@ -62,15 +77,15 @@ class Scene:
                     rnum = random.random()
                     if rnum < 0.3:
                         radius = random.uniform(0.2, 0.4) * resolution
-                        self.add_cylinder(f"pn_pillar_{count}", (x, y, z), radius, 2.0)
+                        self.add_cylinder(f"pn_pillar_{count}", (x, y, z, 0.0, 0.0, 0.0), radius, 2.0)
                     elif rnum < 0.6:
                         length = random.uniform(0.8, 1.0) * resolution
                         length2 = resolution/4.0
-                        self.add_box(f"pn_wall_{count}", (x, y, z), (length, length2, 2.0))
+                        self.add_box(f"pn_wall_{count}", (x, y, z, 0.0, 0.0, 0.0), (length, length2, 2.0))
                     else:
                         length = random.uniform(0.8, 1.0) * resolution
                         length2 = resolution / 4.0
-                        self.add_box(f"pn_wall_{count}", (x, y, z), (length2, length, 2.0))
+                        self.add_box(f"pn_wall_{count}", (x, y, z, 0.0, 0.0, 0.0), (length2, length, 2.0))
                     count += 1
                     occupancy_map[i+i_max,j+j_max] = 1
         return count, occupancy_map
@@ -100,13 +115,13 @@ class Scene:
                     height = 1.0
                     z = height / 2
                     xy = resolution
-                    self.add_box(f"pn_wall_{count}", (x, y, z), (xy, xy, height))
+                    self.add_box(f"pn_wall_{count}", (x, y, z, 0.0, 0.0, 0.0), (xy, xy, height))
                     count += 1
                 elif value > 0.5:
                     height = random.uniform(0.05, 1.0) * resolution
                     z = height / 2
                     radius = random.uniform(0.2, 0.5) * resolution
-                    self.add_cylinder(f"pn_pillar_{count}", (x, y, z), radius, height)
+                    self.add_cylinder(f"pn_pillar_{count}", (x, y, z, 0.0, 0.0, 0.0), radius, height)
                     rnum = random.random()
                     count += 1
         return count, occupancy_map
@@ -145,13 +160,13 @@ class Scene:
             count, occupancy_map = self.fill_map_clutter(i_max, j_max, resolution, threshold, perlin_map)
         # add walls
         z = 0.5
-        self.add_box(f"pn_wall_{count}", (-max_x, 0.0, z), (0.2, length_y, 1.0))
+        self.add_box(f"pn_wall_{count}", (-max_x, 0.0, z, 0.0, 0.0, 0.0), (0.2, length_y, 1.0))
         count += 1
-        self.add_box(f"pn_wall_{count}", (max_x, 0.0, z), (0.2, length_y, 1.0))
+        self.add_box(f"pn_wall_{count}", (max_x, 0.0, z, 0.0, 0.0, 0.0), (0.2, length_y, 1.0))
         count += 1
-        self.add_box(f"pn_wall_{count}", (0.0, -max_y, z), (length_x, 0.2, 1.0))
+        self.add_box(f"pn_wall_{count}", (0.0, -max_y, z, 0.0, 0.0, 0.0), (length_x, 0.2, 1.0))
         count += 1
-        self.add_box(f"pn_wall_{count}", (0.0, max_y, z), (length_x, 0.2, 1.0))
+        self.add_box(f"pn_wall_{count}", (0.0, max_y, z, 0.0, 0.0, 0.0), (length_x, 0.2, 1.0))
         count += 1
         occupancy_map[:, 0] = 1
         occupancy_map[:, -1] = 1
@@ -214,7 +229,7 @@ def export_metadata(seed: int,
                     scale: float,
                     robot_start_xy: np.ndarray,
                     robot_stop_xy: np.ndarray,
-                    occ_map: np.ndarray,
+                    occ_map: np.ndarray | None,
                     filename: str) -> None:
     # assemble serialization dictionary
     data = {'seed': seed,
@@ -228,7 +243,8 @@ def export_metadata(seed: int,
     with open(filename + ".yml", 'w') as file:
         yaml.dump(data, file)
 
-    cv2.imwrite(filename + ".png", occ_map)
+    if occ_map is not None:
+        cv2.imwrite(filename + ".png", occ_map)
 
 
 def export_sdf(scene: Scene, filename: str, do_texture: bool = False):
@@ -284,7 +300,7 @@ def export_sdf(scene: Scene, filename: str, do_texture: bool = False):
         static.text = "true"
         link = ET.SubElement(model, "link", name="link")
         pose = ET.SubElement(link, "pose")
-        pose.text = f"{obj.pose[0]} {obj.pose[1]} {obj.pose[2]} 0 0 0"
+        pose.text = f"{obj.pose[0]} {obj.pose[1]} {obj.pose[2]} {obj.pose[3]} {obj.pose[4]} {obj.pose[5]}"
         visual = ET.SubElement(link, "visual", name="visual")
         mat = ET.SubElement(visual, "material")
         if obj.name == "ground_plane" and do_texture:
@@ -386,7 +402,7 @@ def export_usda(scene: Scene, filename: str):
         elif isinstance(obj, Cylinder):
             geom = UsdGeom.Cylinder.Define(stage, f"/World/{obj.name}/geom")
         size= tuple(np.array(obj.size) * 0.5)
-        xform.AddTranslateOp().Set(Gf.Vec3d(*obj.pose))
+        xform.AddTranslateOp().Set(Gf.Vec3d(*obj.pose[0:3]))
         xform.AddScaleOp().Set(Gf.Vec3d(*size))
 
         # Collision and Physics

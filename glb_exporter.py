@@ -6,6 +6,7 @@ import numpy as np, io
 import trimesh as tm
 from trimesh.visual import TextureVisuals, ColorVisuals
 from trimesh.visual.material import PBRMaterial, SimpleMaterial
+from trimesh.transformations import euler_matrix
 from gpt5 import Scene, SceneObject, Cylinder, Box
 from PIL import Image
 from trimesh.exchange import gltf as gltf_io
@@ -37,6 +38,11 @@ def translate(x: float, y: float, z: float) -> np.ndarray:
     T[:3, 3] = [x, y, z]
     return T
 
+def xform(x: float, y: float, z: float, roll: float, pitch: float, yaw: float) -> np.ndarray:
+    T = np.eye(4)
+    T[:3, 3] = [x, y, z]
+    Trot = euler_matrix(yaw, pitch, roll, axes="rzyx")
+    return T @ Trot
 # --- mesh builders ---
 
 def _ensure_material(mesh: tm.Trimesh, color_rgb: Tuple[float, float, float]) -> None:
@@ -54,20 +60,20 @@ def _ensure_material(mesh: tm.Trimesh, color_rgb: Tuple[float, float, float]) ->
     )
 
 def _box_mesh(size: Tuple[float, float, float],
-              pose_xyz: Tuple[float, float, float],
+              pose_xyz: Tuple[float, float, float, float, float, float],
               color_rgb: Tuple[float, float, float]) -> tm.Trimesh:
     mesh = tm.creation.box(extents=size)
-    mesh.apply_transform(translate(*pose_xyz))
+    mesh.apply_transform(xform(*pose_xyz))
     _ensure_material(mesh, color_rgb)
     return mesh
 
 def _cylinder_mesh(radius: float, height: float,
-                   pose_xyz: Tuple[float, float, float],
+                   pose_xyz: Tuple[float, float, float, float, float, float],
                    color_rgb: Tuple[float, float, float],
                    sections: int = 64) -> tm.Trimesh:
     # trimesh cylinder is along +Z, centered at origin
     mesh = tm.creation.cylinder(radius=radius, height=height, sections=sections)
-    mesh.apply_transform(translate(*pose_xyz))
+    mesh.apply_transform(xform(*pose_xyz))
     _ensure_material(mesh, color_rgb)
     return mesh
 
@@ -79,7 +85,7 @@ def _ground_mesh(size, pose_xyz, texture_path):
     Texture shows exactly once (UV 0..1).
     """
     sx, sy, sz = size
-    px, py, pz = pose_xyz
+    px, py, pz, *_ = pose_xyz
     z_top = pz + sz * 0.5 + .001
 
     # 4 verts (counter-clockwise), 2 triangles
