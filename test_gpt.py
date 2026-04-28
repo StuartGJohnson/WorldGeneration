@@ -158,6 +158,40 @@ class MyTestCase(unittest.TestCase):
             data = yaml.safe_load(file)
         robot_xy = np.array(data['robot_start_xy'])
 
+    def test_occupancy_stuff_clutter3_occ(self):
+        # the previous generation, but with the new ros2 friendly,
+        # high resolution occupancy map
+        scene = gpt5.Scene()
+        # seed = random.randint(0, 1000)
+        resolution = 1.0
+        area = (6.0, 12.0)
+        threshold = -0.05
+        scale = 0.4
+        seed = 46
+        (res, occ_map) = scene.generate_perlin_navigable_zone(area_size=area,
+                                                              resolution=resolution,
+                                                              threshold=threshold,
+                                                              scale=scale,
+                                                              scene_type_tall=False,
+                                                              seed=seed)
+
+        robot_start_xy, robot_stop_xy = gpt5.get_reachable_locations(res, occ_map)
+
+        gpt5.export_sdf(scene, "scene_stuffx3", True)
+        gpt5.export_usda(scene, "scene_stuffx3")
+        gpt5.export_metadata(seed, threshold, resolution, area, scale, robot_start_xy, robot_stop_xy, occ_map,
+                             "scene_stuffx3")
+        glb_exporter.export_glb(scene, "scene_stuffx3.glb", True, texture_path="floor_texture.png")
+
+        scene.export_ros2_map("scene_stuffx3_ros2", 0.185, 0.02, 0.5)
+
+        # self.assertTrue(np.array_equal(np.array([-2.0, 0.0]), robot_start_xy)) # add assertion here
+
+        # retrieve robot_xy
+        with open("scene_stuffx3.yml", 'r') as file:
+            data = yaml.safe_load(file)
+        robot_xy = np.array(data['robot_start_xy'])
+
     def test_calibration(self):
         scene = gpt5.Scene()
         scene.make_calibration_scene()

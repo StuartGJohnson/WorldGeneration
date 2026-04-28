@@ -49,7 +49,7 @@ See also:
 
 ## Usage
 
-Currently, all code is run from the unit test: `test_gpy.py`. This will evolve.
+Currently, all code is run from the unit test: `test_gpt.py`. This will evolve.
 
 ### World generation
 

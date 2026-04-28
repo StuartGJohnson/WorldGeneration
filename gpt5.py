@@ -64,6 +64,176 @@ class Scene:
         self.add_box("calibration_target", pose, (bx,by,bz))
         self.add_ground_plane(size=(3, 3, 0.001))
 
+    def export_ros2_map(self,
+                        filename: str,
+                        min_object_height: float,
+                        map_resolution_meters: float,
+                        map_buffer_xy_meters: float) -> Tuple[np.ndarray, dict]:
+        """
+        Export a Nav2-compatible occupancy map from the actual scene geometry.
+
+        The returned/generated ros2_occupancy_map uses ROS OccupancyGrid values:
+        -1 unknown, 0 free, 100 occupied. The PNG encodes those as gray, white,
+        and black respectively for Nav2's trinary map loader.
+        """
+        if map_resolution_meters <= 0.0:
+            raise ValueError("map_resolution_meters must be positive")
+        if map_buffer_xy_meters < 0.0:
+            raise ValueError("map_buffer_xy_meters must be non-negative")
+
+        ground = next((obj for obj in self.objects if obj.name == "ground_plane" and isinstance(obj, Box)), None)
+        if ground is not None:
+            scene_min_x = ground.pose[0] - ground.size[0] / 2.0
+            scene_max_x = ground.pose[0] + ground.size[0] / 2.0
+            scene_min_y = ground.pose[1] - ground.size[1] / 2.0
+            scene_max_y = ground.pose[1] + ground.size[1] / 2.0
+        else:
+            bounds = [self._object_xy_bounds(obj) for obj in self.objects if obj.name != "ground_plane"]
+            if not bounds:
+                raise ValueError("Cannot export a ROS2 map for an empty scene")
+            scene_min_x = min(bound[0] for bound in bounds)
+            scene_max_x = max(bound[1] for bound in bounds)
+            scene_min_y = min(bound[2] for bound in bounds)
+            scene_max_y = max(bound[3] for bound in bounds)
+
+        origin_x = scene_min_x - map_buffer_xy_meters
+        origin_y = scene_min_y - map_buffer_xy_meters
+        max_x = scene_max_x + map_buffer_xy_meters
+        max_y = scene_max_y + map_buffer_xy_meters
+        width = int(np.ceil((max_x - origin_x) / map_resolution_meters))
+        height = int(np.ceil((max_y - origin_y) / map_resolution_meters))
+
+        solid_map = np.zeros((height, width), dtype=np.uint8)
+        scene_mask = self._scene_extent_mask(height, width, origin_x, origin_y,
+                                             map_resolution_meters,
+                                             scene_min_x, scene_max_x,
+                                             scene_min_y, scene_max_y)
+        for obj in self.objects:
+            if obj.name == "ground_plane":
+                continue
+            top_z = obj.pose[2] + obj.size[2] / 2.0
+            if top_z < min_object_height:
+                continue
+            self._rasterize_object_xy(solid_map, obj, origin_x, origin_y,
+                                      map_resolution_meters)
+
+        reachable_free = self._reachable_free_space(solid_map, scene_mask)
+        visible_obstacles = self._visible_obstacle_surfaces(solid_map, reachable_free)
+
+        ros2_occupancy_map = np.full((height, width), -1, dtype=np.int8)
+        ros2_occupancy_map[reachable_free] = 0
+        ros2_occupancy_map[visible_obstacles] = 100
+
+        png_map = np.full((height, width), 205, dtype=np.uint8)
+        png_map[ros2_occupancy_map == 0] = 254
+        png_map[ros2_occupancy_map == 100] = 0
+
+        image_filename = filename + ".png"
+        yaml_filename = filename + ".yaml"
+        # Image rows are top-to-bottom; ROS map origin is the lower-left cell.
+        cv2.imwrite(image_filename, np.flipud(png_map))
+
+        metadata = {
+            "image": os.path.basename(image_filename),
+            "mode": "trinary",
+            "resolution": float(map_resolution_meters),
+            "origin": [float(origin_x), float(origin_y), 0.0],
+            "negate": 0,
+            "occupied_thresh": 0.65,
+            "free_thresh": 0.25,
+        }
+        with open(yaml_filename, "w") as file:
+            yaml.dump(metadata, file, sort_keys=False)
+
+        return ros2_occupancy_map, metadata
+
+    def _object_xy_bounds(self, obj: SceneObject) -> Tuple[float, float, float, float]:
+        if isinstance(obj, Cylinder):
+            return (obj.pose[0] - obj.radius, obj.pose[0] + obj.radius,
+                    obj.pose[1] - obj.radius, obj.pose[1] + obj.radius)
+
+        sx, sy = obj.size[0], obj.size[1]
+        yaw = obj.pose[5]
+        corners = np.array([
+            [-sx / 2.0, -sy / 2.0],
+            [ sx / 2.0, -sy / 2.0],
+            [ sx / 2.0,  sy / 2.0],
+            [-sx / 2.0,  sy / 2.0],
+        ])
+        rot = np.array([[np.cos(yaw), -np.sin(yaw)],
+                        [np.sin(yaw),  np.cos(yaw)]])
+        world = corners @ rot.T + np.array([obj.pose[0], obj.pose[1]])
+        return (float(np.min(world[:, 0])), float(np.max(world[:, 0])),
+                float(np.min(world[:, 1])), float(np.max(world[:, 1])))
+
+    def _scene_extent_mask(self,
+                           height: int,
+                           width: int,
+                           origin_x: float,
+                           origin_y: float,
+                           resolution: float,
+                           scene_min_x: float,
+                           scene_max_x: float,
+                           scene_min_y: float,
+                           scene_max_y: float) -> np.ndarray:
+        cols = np.arange(width)
+        rows = np.arange(height)
+        xs = origin_x + (cols + 0.5) * resolution
+        ys = origin_y + (rows + 0.5) * resolution
+        return ((ys[:, None] >= scene_min_y) & (ys[:, None] <= scene_max_y) &
+                (xs[None, :] >= scene_min_x) & (xs[None, :] <= scene_max_x))
+
+    def _rasterize_object_xy(self,
+                             solid_map: np.ndarray,
+                             obj: SceneObject,
+                             origin_x: float,
+                             origin_y: float,
+                             resolution: float) -> None:
+        min_x, max_x, min_y, max_y = self._object_xy_bounds(obj)
+        height, width = solid_map.shape
+        col_min = max(0, int(np.floor((min_x - origin_x) / resolution)))
+        col_max = min(width - 1, int(np.ceil((max_x - origin_x) / resolution)))
+        row_min = max(0, int(np.floor((min_y - origin_y) / resolution)))
+        row_max = min(height - 1, int(np.ceil((max_y - origin_y) / resolution)))
+        if col_min > col_max or row_min > row_max:
+            return
+
+        cols = np.arange(col_min, col_max + 1)
+        rows = np.arange(row_min, row_max + 1)
+        xs = origin_x + (cols + 0.5) * resolution
+        ys = origin_y + (rows + 0.5) * resolution
+        grid_x, grid_y = np.meshgrid(xs, ys)
+
+        if isinstance(obj, Cylinder):
+            mask = (grid_x - obj.pose[0]) ** 2 + (grid_y - obj.pose[1]) ** 2 <= obj.radius ** 2
+        else:
+            yaw = obj.pose[5]
+            dx = grid_x - obj.pose[0]
+            dy = grid_y - obj.pose[1]
+            local_x = np.cos(yaw) * dx + np.sin(yaw) * dy
+            local_y = -np.sin(yaw) * dx + np.cos(yaw) * dy
+            mask = ((np.abs(local_x) <= obj.size[0] / 2.0) &
+                    (np.abs(local_y) <= obj.size[1] / 2.0))
+
+        solid_map[row_min:row_max + 1, col_min:col_max + 1][mask] = 1
+
+    def _reachable_free_space(self, solid_map: np.ndarray, scene_mask: np.ndarray) -> np.ndarray:
+        free_map = ((solid_map == 0) & scene_mask).astype(np.uint8)
+        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(free_map, connectivity=4)
+        if num_labels <= 1:
+            return np.zeros_like(solid_map, dtype=bool)
+        max_free_label = np.argmax(stats[1:, cv2.CC_STAT_AREA]) + 1
+        return labels == max_free_label
+
+    def _visible_obstacle_surfaces(self,
+                                   solid_map: np.ndarray,
+                                   reachable_free: np.ndarray) -> np.ndarray:
+        kernel = np.array([[0, 1, 0],
+                           [1, 1, 1],
+                           [0, 1, 0]], dtype=np.uint8)
+        adjacent_to_reachable_free = cv2.dilate(reachable_free.astype(np.uint8), kernel) > 0
+        return (solid_map > 0) & adjacent_to_reachable_free
+
     def fill_map_high(self, np_area_size, i_max, j_max, resolution, threshold, perlin_map):
         occupancy_map = np.zeros((np_area_size//resolution + 1).astype(int), dtype=np.uint8)
         count = 0
@@ -245,6 +415,17 @@ def export_metadata(seed: int,
 
     if occ_map is not None:
         cv2.imwrite(filename + ".png", occ_map)
+
+
+def export_ros2_map(scene: Scene,
+                    filename: str,
+                    min_object_height: float,
+                    map_resolution_meters: float,
+                    map_buffer_xy_meters: float) -> Tuple[np.ndarray, dict]:
+    return scene.export_ros2_map(filename,
+                                 min_object_height,
+                                 map_resolution_meters,
+                                 map_buffer_xy_meters)
 
 
 def export_sdf(scene: Scene, filename: str, do_texture: bool = False):
@@ -443,4 +624,3 @@ def export_usda(scene: Scene, filename: str):
 #
 # export_sdf(scene, "scene.sdf")
 # export_usda(scene, "scene.usda")
-
