@@ -124,7 +124,7 @@ class Scene:
         ros2_occupancy_map[reachable_free] = 0
         ros2_occupancy_map[visible_obstacles] = 100
 
-        png_map = np.full((height, width), 205, dtype=np.uint8)
+        png_map = np.full((height, width), 127, dtype=np.uint8)
         png_map[ros2_occupancy_map == 0] = 254
         png_map[ros2_occupancy_map == 100] = 0
 
